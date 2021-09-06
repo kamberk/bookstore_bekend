@@ -1,10 +1,10 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import UserModel from '../models/user';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/user');
 
 const secret = 'testJWTtoken';
 
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
     const {email, name, surname, password } = req.body;
 
     try {
@@ -21,3 +21,5 @@ export const signup = async (req, res) => {
         res.status(500).json({message: `Something went wrong: ${error}`})
     }
 }
+
+module.exports = {signup}
