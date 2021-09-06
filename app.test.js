@@ -3,7 +3,7 @@ const request = require('supertest')
 
 describe("GET /", () => {
     describe("when nothing", () => {
-        test("shoud return status 200 just test", async() => {
+        test("shoud return status 200 just test 1", async() => {
             const res = await request(app).get("/")
             expect(res.statusCode).toBe(200)
         })
