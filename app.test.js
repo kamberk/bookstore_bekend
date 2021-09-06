@@ -1,6 +1,5 @@
 const app = require('./app')
 const request = require('supertest')
-const mongoose = require('mongoose')
 
 describe("GET /", () => {
     describe("when nothing", () => {
@@ -10,3 +9,4 @@ describe("GET /", () => {
         })
     })
 })
+

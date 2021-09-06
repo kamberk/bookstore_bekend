@@ -4,7 +4,7 @@
   "description": "bekend za projekat eknjizare",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --forceExit"
   },
   "author": "kambo",
   "license": "ISC",
