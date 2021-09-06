@@ -15,11 +15,14 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "jest": "^27.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.4",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
     "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "jest": "^27.1.0",
+    "superset": "^2.0.1"
   }
 }
