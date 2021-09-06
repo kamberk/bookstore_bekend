@@ -9,7 +9,7 @@ const signup = async (req, res) => {
 
     try {
         const oldUser = UserModel.findOne({ email });
-        if (oldUser) return res.status(400).json({message: "User with this email already exists!"});
+        if (oldUser) return res.status(400).json({message: "User with this email address already exists!"});
         const newName = `${name}${surname}`;
         const hashedPass = await bcrypt.hash(password, 12);
         const token = jwt.sign({email, hashedPass, newName}, secret, {expiresIn: "2h"});
