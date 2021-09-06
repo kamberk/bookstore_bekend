@@ -11,4 +11,6 @@ const userSchema = new mongoose.Schema({
     kupljene: {type: [book], default: []}
 });
 
-module.exports = userSchema
+const User = mongoose.model('User', userSchema);
+
+module.exports = User
