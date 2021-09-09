@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRouter = require('./routes/users.js');
+const bookRouter = require('./routes/books.js');
 require('dotenv').config();
 const app = express();
 
@@ -20,5 +21,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use('/api', bookRouter);
 
 module.exports = app
