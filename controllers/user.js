@@ -39,7 +39,7 @@ const signin = async(req, res) => {
 
         if(!noUser.confirmed) return res.status(400).json({message: "Please activate account first!"});
 
-        const token = jwt.sign({email: noUser.email, id: noUser._id}, secret, {expiresIn: "2h"});
+        const token = jwt.sign({name: noUser.name, email: noUser.email, id: noUser._id }, secret, {expiresIn: "2h"});
 
         res.status(200).json({result: noUser, token});
     } catch (error) {

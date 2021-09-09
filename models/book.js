@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const bookSchema = new mongoose.Schema({
-    postedBy: String,
+    postedBy: {type: String},
     title: {type: String, required: true},
     autori: {type: String, required: true, default: []},
     izdavac: {type: String, required: true},
