@@ -2,10 +2,50 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {sendConfirmationEmail} = require('../mailer/mailer');
+const {sendResetPassEmail} = require('../mailer/resetPass');
 const { use } = require('../routes/users');
 const { json } = require('body-parser');
 
 const secret = 'testJWTtoken';
+
+const resetPass = async(req, res) => {
+    const {email} = req.body;
+    try {
+        const user = await User.findOne({email});
+        if(!user) return res.status(400).json({message: "No user with this email"});
+        const newName = `${user.name}${user.surname}`;
+        const pass = user.password;
+        const token = jwt.sign({email, pass, newName}, secret, {expiresIn: "2h"});
+        await sendResetPassEmail({toUser: user.email, token: token, name: user.name});
+
+        return res.status(201).json({message: "Please check your email and follow link to reset password!"});
+    } catch (error) {
+        return res.status(500).json({message: error});
+    }
+}
+
+const newPassword = async (req, res) => {
+    const {token} = req.params;
+    const {password} = req.body;
+    try {
+        const newPass = await bcrypt.hash(password, 12);
+        if(token) {
+            jwt.verify(token, secret, async function (error, decoded) {
+                if(error) return res.status(400).json({message: "Expiried link!"});
+
+                const {email, hashedPass, newName} = decodedToken;
+                const oldUser = await User.findOne({email}, function(err, doc ) {
+                    if(err) return res.status(400).json({message: err.message});
+                    doc.password = newPass;
+                    doc.save();
+                });
+            })
+            return res.status(201).json({message: "Password change success!"});
+        }
+    } catch (error) {
+        return res.status(500).json({message: error});
+    }
+}
 
 const signup = async (req, res) => {
     const {email, name, surname, password } = req.body;
@@ -62,7 +102,7 @@ const activateAccount = async(req, res) => {
                     doc.save();
                 });
                 
-                res.redirect(`http://localhost:8080`);
+                res.redirect(`http://localhost:4200`);
                 return alert('Account activated successfully! Please login now.');
             })
         }
@@ -85,4 +125,4 @@ const deleteUser = async (req, res) => {
 
 }
 
-module.exports = {signup, signin, deleteUser, activateAccount}
+module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword}

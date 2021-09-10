@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, secret);
         req.name = decoded?.name;
+        req.email = decoded?.email;
     } catch (error) {
         return res.status(401).send("Invalid token!");
     }
