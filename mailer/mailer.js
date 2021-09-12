@@ -16,8 +16,8 @@ exports.sendConfirmationEmail = function({toUser, hash, name}) {
             subject: 'Activation email',
             html: `
                 <h1>Hello ${name}, Please confirm your Email:</h1>
-                <p>Please click this link to activate your account:</p>
-                <h3><a target="_" href="${process.env.DOMAIN}/user/activate-acc/${hash}">LINK</a></h3>
+                <p>Please click the link below to prove that the mail is yours:</p>
+                <h2><a target="_" href="${process.env.DOMAIN}/activate/${hash}">LINK</a></2>
             `
         }
 

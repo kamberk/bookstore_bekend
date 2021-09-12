@@ -20,6 +20,7 @@
     "mongoose": "^6.0.4",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
+    "req-flash": "0.0.3",
     "supertest": "^6.1.6"
   },
   "devDependencies": {

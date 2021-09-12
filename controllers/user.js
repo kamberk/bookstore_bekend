@@ -5,6 +5,7 @@ const {sendConfirmationEmail} = require('../mailer/mailer');
 const {sendResetPassEmail} = require('../mailer/resetPass');
 const { use } = require('../routes/users');
 const { json } = require('body-parser');
+const alert = require('alert');
 
 const secret = 'testJWTtoken';
 
@@ -101,13 +102,12 @@ const activateAccount = async(req, res) => {
                     doc.confirmed = true;
                     doc.save();
                 });
-                
-                res.redirect(`http://localhost:4200`);
-                return alert('Account activated successfully! Please login now.');
+
+                return res.status(200).json(oldUser);
             })
-        }
+        } 
     } catch (error) {
-        res.status(400).json({message: error.message});
+       return res.status(400).json({message: error.message});
     }
 }
 

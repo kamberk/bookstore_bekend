@@ -7,7 +7,6 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors());
-
 app.use(express.json())
 
 mongoose.connect('mongodb://mongo:27017/book-db', {useNewUrlParser: true}).then(() => {
