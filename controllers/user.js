@@ -97,13 +97,13 @@ const activateAccount = async(req, res) => {
                 if(error) return res.status(400).json({message: "Expiried link!"});
 
                 const {email, hashedPass, newName} = decodedToken;
-                const oldUser = await User.findOne({email}, function(err, doc ) {
-                    if(err) return res.status(400).json({message: err.message});
-                    doc.confirmed = true;
-                    doc.save();
+                let filer = {email: email};
+                let update = {confirmed: true};
+                let doc = await User.findOneAndUpdate(filer, update, {
+                    new: true
                 });
-
-                return res.status(200).json(oldUser);
+                console.log(doc);
+                return res.status(201).json({message: "Activated! You can login now.."});
             })
         } 
     } catch (error) {
