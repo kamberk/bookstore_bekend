@@ -25,28 +25,7 @@ const resetPass = async(req, res) => {
     }
 }
 
-const newPassword = async (req, res) => {
-    const {token} = req.params;
-    const {password} = req.body;
-    try {
-        const newPass = await bcrypt.hash(password, 12);
-        if(token) {
-            jwt.verify(token, secret, async function (error, decoded) {
-                if(error) return res.status(400).json({message: "Expiried link!"});
 
-                const {email, hashedPass, newName} = decodedToken;
-                const oldUser = await User.findOne({email}, function(err, doc ) {
-                    if(err) return res.status(400).json({message: err.message});
-                    doc.password = newPass;
-                    doc.save();
-                });
-            })
-            return res.status(201).json({message: "Password change success!"});
-        }
-    } catch (error) {
-        return res.status(500).json({message: error});
-    }
-}
 
 const signup = async (req, res) => {
     const {email, name, surname, password } = req.body;
@@ -87,6 +66,32 @@ const signin = async(req, res) => {
         res.status(500).json({message: `${error}`});
     }
 
+}
+
+const newPassword = async (req, res) => {
+    const {token} = req.params;
+    const {password} = req.body;
+    try {
+        const newPass = await bcrypt.hash(password, 12);
+        if(token) {
+            jwt.verify(token, secret, async function (error, decoded) {
+                if(error) return res.status(400).json({message: "Expiried link!"});
+                const {email, hashedPass, newName} = decoded;
+                let filter = {email: email};
+                let update = {password: newPass};
+                const testUser = await User.findOne({email});
+                const samePass = await bcrypt.compare(password, testUser.password);
+                if (samePass) return res.status(400).json({message: "New password cannot be the same as your old password!"})
+                let doc = await User.findOneAndUpdate(filter, update, {
+                    new: true
+                });
+                console.log(doc);
+                return res.status(201).json({message: "Password change success!"});
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({message: error});
+    }
 }
 
 const activateAccount = async(req, res) => {
