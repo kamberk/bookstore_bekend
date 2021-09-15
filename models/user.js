@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true},
     confirmed: {type: Boolean, default: false},
     cart: {type: [String], default: []},
-    kupljene: {type: [String], default: []}
+    kupljene: {type: [String], default: []},
+    ulica: {type: String, default: ''},
+    grad: {type: String, default: ''},
+    zipcode: {type: String, default: ''},
+
 });
 
 const User = mongoose.model('User', userSchema);

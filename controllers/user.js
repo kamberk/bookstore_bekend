@@ -116,6 +116,21 @@ const activateAccount = async(req, res) => {
     }
 }
 
+const updateDeliveryInfo = async (req, res) => {
+    const {ulica, opstina, zipcode} = req.body;
+    try {
+        const filter = {email: req.email};
+        const update = {zipcode: zipcode, ulica: ulica, grad: opstina };
+        let doc = await User.findOneAndUpdate(filter, update, {
+            new: true
+        });
+        console.log(doc);
+        return res.status(201).json({message: "Information saved successfully!"});
+    } catch (error) {
+        return res.status(400).json({message: error.message});
+    }
+}
+
 const deleteUser = async (req, res) => {
     const { email } = req.body;
     
@@ -130,4 +145,4 @@ const deleteUser = async (req, res) => {
 
 }
 
-module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword}
+module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword, updateDeliveryInfo}
