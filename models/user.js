@@ -11,8 +11,7 @@ const userSchema = new mongoose.Schema({
     kupljene: {type: [String], default: []},
     ulica: {type: String, default: ''},
     grad: {type: String, default: ''},
-    zipcode: {type: String, default: ''},
-
+    zipcode: {type: String, default: ''}
 });
 
 const User = mongoose.model('User', userSchema);
