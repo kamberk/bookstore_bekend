@@ -5,7 +5,7 @@ const { signup, deleteUser, activateAccount, signin, resetPass, newPassword, upd
 
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.delete("/deleteUser", deleteUser);
+router.delete("/deleteUser", auth, deleteUser);
 router.get('/activate-acc/:token', activateAccount);
 router.post("/restart-password", resetPass);
 router.post("/change-password/:token", newPassword);

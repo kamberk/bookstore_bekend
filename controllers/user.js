@@ -131,14 +131,13 @@ const updateDeliveryInfo = async (req, res) => {
     }
 }
 
-const deleteUser = async (req, res) => {
-    const { email } = req.body;
-    
+const deleteUser = async (req, res) => {    
     try {
-        const user = await User.findOne({email});
+        const filter = {email: req.email}
+        const user = await User.findOne(filter);
         if(!user) return res.status(400).json({message: "No user with this email!"});
         await User.findByIdAndDelete(user._id);
-        return res.status(200).json({message: `User deleted success! ${user}`});
+        return res.status(200).json({message: `User deleted success!`});
     } catch (error) {
         return res.status(400).json({error});
     }
