@@ -1,11 +1,11 @@
 const express = require('express');
-const Book = require('../models/book');
+const Knjiga = require('../models/knjiga');
 
 const router = express.Router();
 
 const createBook = async(req, res) => {
     const book = req.body;
-    const newBook = new Book({...book, postedBy: req.name, createdAt: new Date().toISOString() })
+    const newBook = new Knjiga({...book })
     try {
         await newBook.save();
         res.status(201).json(newBook);
@@ -16,7 +16,7 @@ const createBook = async(req, res) => {
 
 const getBooks = async(req, res) => {
     try {
-        const Books = await Book.find();
+        const Books = await Knjiga.find();
         res.status(200).json(Books);
     } catch (error) {
         res.status(404).json({message: error.message});
@@ -25,11 +25,20 @@ const getBooks = async(req, res) => {
 
 const getCreatedBooks = async(req, res) => {
     try {
-        const Books = await Book.find({email: req.email});
+        const Books = await Knjiga.find({email: req.email});
         res.status(200).json(Books);
     } catch (error) {
         res.status(404).json({message: error.message});
     }
 }
 
-module.exports = {createBook, getCreatedBooks, getBooks}   
+const getBookById = async(req, res) => {
+    try {
+        const Books = await Knjiga.findById(req.params.id);
+        res.status(200).json(Books);
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
+module.exports = {createBook, getCreatedBooks, getBooks, getBookById}   
