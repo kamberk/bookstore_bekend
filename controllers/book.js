@@ -1,8 +1,6 @@
 const express = require('express');
 const Knjiga = require('../models/knjiga');
 
-const router = express.Router();
-
 const createBook = async(req, res) => {
     const book = req.body;
     const newBook = new Knjiga({...book })
