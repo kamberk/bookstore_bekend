@@ -12,12 +12,21 @@ const createBook = async(req, res) => {
     }
 }
 
-const getBooks = async(req, res) => {
+const getBooks = async(req, res, next) => {
+    const page = parseInt(req.params.page);
+    const limit = 4;
+    const skipIndex = (page - 1) * limit;
+    const results = {};
     try {
-        const Books = await Knjiga.find();
-        res.status(200).json(Books);
+        results.results = await Knjiga.find()
+            .sort({_id: 1})
+            .limit(limit)
+            .skip(skipIndex)
+            .exec();
+        res.status(200).json(results);
+        next();
     } catch (error) {
-        res.status(404).json({message: error.message});
+        res.status(500).json({message: error.message});
     }
 }
 
