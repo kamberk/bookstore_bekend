@@ -1,4 +1,5 @@
 const express = require('express');
+
 const Knjiga = require('../models/knjiga');
 
 const createBook = async(req, res) => {
@@ -48,4 +49,15 @@ const getBookById = async(req, res) => {
     }
 }
 
-module.exports = {createBook, getCreatedBooks, getBooks, getBookById}   
+const getBookByClass = async(req, res) => {
+    try {
+        Knjiga.find({'skola': req.params.class}, function(err, docs) {
+            if(err) res.status(404).json({message: err.message});
+            res.status(200).json({docs});
+        })
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
+module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookByClass}   
