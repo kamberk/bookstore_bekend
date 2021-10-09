@@ -31,6 +31,15 @@ const getBooks = async(req, res, next) => {
     }
 }
 
+const getAllBooks = async(req, res) => {
+    try {
+        const Books = await Knjiga.find();
+        res.status(200).json(Books);
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
 const getCreatedBooks = async(req, res) => {
     try {
         const Books = await Knjiga.find({email: req.email});
@@ -49,15 +58,29 @@ const getBookById = async(req, res) => {
     }
 }
 
-const getBookByClass = async(req, res) => {
+const getBookByClass = async(req, res, next) => {
+    const page = parseInt(req.params.page);
+    const limit = 4;
+    const skipIndex = (page - 1) * limit;
     try {
-        Knjiga.find({'skola': req.params.class}, function(err, docs) {
-            if(err) res.status(404).json({message: err.message});
-            res.status(200).json({docs});
-        })
+        const Books = await Knjiga.find({'skola': req.params.class}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
+        res.status(200).json(Books);
+        next();
     } catch (error) {
         res.status(404).json({message: error.message});
     }
 }
 
-module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookByClass}   
+// const getBookByClass = async(req, res) => {
+//     try {
+//         Knjiga.find({'skola': req.params.class}, function(err, docs) {
+//             if(err) res.status(404).json({message: err.message});
+            
+//             res.status(200).json({docs});
+//         })
+//     } catch (error) {
+//         res.status(404).json({message: error.message});
+//     }
+// }
+
+module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookByClass, getAllBooks}   
