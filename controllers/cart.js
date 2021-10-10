@@ -12,7 +12,7 @@ const addToCart = async(req, res) => {
         const kolicina = Kolicina;
         const id = Book._id;
         const user = req.email;
-        const newCart = new Cart({user: user, cena: cena, naziv: naslov, kolicina: kolicina, id: id, slika: img});
+        const newCart = new Cart({user: user, cena: cena*kolicina, naziv: naslov, kolicina: kolicina, id: id, slika: img});
         await newCart.save();
         res.status(201).json(newCart);
     } catch (error) {

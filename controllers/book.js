@@ -58,7 +58,7 @@ const getBookById = async(req, res) => {
     }
 }
 
-const getBookByClass = async(req, res, next) => {
+const getBookBySchool = async(req, res, next) => {
     const page = parseInt(req.params.page);
     const limit = 4;
     const skipIndex = (page - 1) * limit;
@@ -66,6 +66,26 @@ const getBookByClass = async(req, res, next) => {
         const Books = await Knjiga.find({'skola': req.params.class}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
         res.status(200).json(Books);
         next();
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
+const getBookByClass = async(req, res, next) => {
+    const page = parseInt(req.params.page);
+    const limit = 4;
+    const skipIndex = (page - 1) * limit;
+    try {
+        if(req.params.skola === "none") {
+            const Books = await Knjiga.find({'razred': req.params.razred}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
+            res.status(200).json(Books);
+            next();
+        } else {
+            
+            const Books = await Knjiga.find({'razred': req.params.razred, 'skola': req.params.skola}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
+            res.status(200).json(Books);
+            next();
+        }
     } catch (error) {
         res.status(404).json({message: error.message});
     }
@@ -83,4 +103,4 @@ const getBookByClass = async(req, res, next) => {
 //     }
 // }
 
-module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookByClass, getAllBooks}   
+module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookBySchool, getAllBooks, getBookByClass}   
