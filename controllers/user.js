@@ -4,6 +4,7 @@ const User = require('../models/user');
 const {sendConfirmationEmail} = require('../mailer/mailer');
 const {sendResetPassEmail} = require('../mailer/resetPass');
 const {sendContactResponse} = require('../mailer/contact');
+const {sendSubConf} = require('../mailer/subscribe');
 const { use } = require('../routes/users');
 const { json } = require('body-parser');
 const alert = require('alert');
@@ -155,4 +156,14 @@ const contact = async (req, res) => {
     }
 }
 
-module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword, updateDeliveryInfo, contact}
+const subscribe = async(req, res) => {
+    const {email} = req.body;
+    try {
+        await sendSubConf({toUser: email});
+        res.status(200).json({message: 'Prijava uspesna!'});
+    } catch (error) {
+        return res.status(400).json({error});
+    }
+}
+
+module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword, updateDeliveryInfo, contact, subscribe}
