@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {sendConfirmationEmail} = require('../mailer/mailer');
 const {sendResetPassEmail} = require('../mailer/resetPass');
+const {sendContactResponse} = require('../mailer/contact');
 const { use } = require('../routes/users');
 const { json } = require('body-parser');
 const alert = require('alert');
@@ -144,4 +145,14 @@ const deleteUser = async (req, res) => {
 
 }
 
-module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword, updateDeliveryInfo}
+const contact = async (req, res) => {
+    const {Comment, Email, Fullname} = req.body;
+    try {
+        await sendContactResponse({toUser: Email, name: Fullname});
+        res.status(200).json({message: 'Poslato!'});
+    } catch (error) {
+        return res.status(400).json({error});
+    }
+}
+
+module.exports = {signup, signin, deleteUser, activateAccount, resetPass, newPassword, updateDeliveryInfo, contact}
