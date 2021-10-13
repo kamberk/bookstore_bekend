@@ -1,6 +1,7 @@
 const express = require('express');
 const Knjiga = require('../models/knjiga');
 const Cart = require('../models/cart');
+const {sendOrderedInformation} = require('../mailer/createdOrder');
 
 const addToCart = async(req, res) => {
     const {Kolicina, naslov} = req.body;
@@ -47,4 +48,15 @@ const clearCart = async(req, res) => {
     }
 }
 
-module.exports = {addToCart, getCartItems, clearCart, removeOneItem};
+const createOrder = async(req, res) => {
+    const total = parseInt(req.params.total);
+    try {
+        const deletedItems = await Cart.deleteMany({user: req.email});
+        await sendOrderedInformation({toUser: req.email, total: total});
+        res.status(200).json({message: 'Uspesno naruceno!'});
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
+module.exports = {addToCart, getCartItems, clearCart, removeOneItem, createOrder};
