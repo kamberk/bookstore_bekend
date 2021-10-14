@@ -20,7 +20,7 @@ const getBooks = async(req, res, next) => {
     const results = {};
     try {
         results.results = await Knjiga.find()
-            .sort({_id: 1})
+            .sort({'cena': -1})
             .limit(limit)
             .skip(skipIndex)
             .exec();
@@ -63,7 +63,7 @@ const getBookBySchool = async(req, res, next) => {
     const limit = 3;
     const skipIndex = (page - 1) * limit;
     try {
-        const Books = await Knjiga.find({'skola': req.params.class}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
+        const Books = await Knjiga.find({'skola': req.params.class}).sort({'cena': -1}).limit(limit).skip(skipIndex).exec();
         res.status(200).json(Books);
         next();
     } catch (error) {
@@ -77,12 +77,12 @@ const getBookByClass = async(req, res, next) => {
     const skipIndex = (page - 1) * limit;
     try {
         if(req.params.skola === "none") {
-            const Books = await Knjiga.find({'razred': req.params.razred}).sort({_id: 1}).exec();
+            const Books = await Knjiga.find({'razred': req.params.razred}).sort({'cena': -1}).exec();
             res.status(200).json(Books);
             next();
         } else {
             
-            const Books = await Knjiga.find({'razred': req.params.razred, 'skola': req.params.skola}).sort({_id: 1}).exec();
+            const Books = await Knjiga.find({'razred': req.params.razred, 'skola': req.params.skola}).sort({'cena': -1}).exec();
             res.status(200).json(Books);
             next();
         }
@@ -96,7 +96,7 @@ const getBookByPublisher = async (req, res, next ) => {
     const limit = 3;
     const skipIndex = (page - 1) * limit;
     try {
-        const Books = await Knjiga.find({'izdavac': req.params.izdavac}).sort({_id: 1}).limit(limit).skip(skipIndex).exec();
+        const Books = await Knjiga.find({'izdavac': req.params.izdavac}).sort({'cena': -1}).limit(limit).skip(skipIndex).exec();
         res.status(200).json(Books)
     } catch (error) {
         res.status(404).json({message: error.message});
