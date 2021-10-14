@@ -40,14 +40,14 @@ const getAllBooks = async(req, res) => {
     }
 }
 
-const getCreatedBooks = async(req, res) => {
-    try {
-        const Books = await Knjiga.find({email: req.email});
-        res.status(200).json(Books);
-    } catch (error) {
-        res.status(404).json({message: error.message});
-    }
-}
+// const getCreatedBooks = async(req, res) => {
+//     try {
+//         const Books = await Knjiga.find({email: req.email});
+//         res.status(200).json(Books);
+//     } catch (error) {
+//         res.status(404).json({message: error.message});
+//     }
+// }
 
 const getBookById = async(req, res) => {
     try {
@@ -115,4 +115,4 @@ const getBookByPublisher = async (req, res, next ) => {
 //     }
 // }
 
-module.exports = {createBook, getCreatedBooks, getBooks, getBookById, getBookBySchool, getAllBooks, getBookByClass, getBookByPublisher}   
+module.exports = {createBook, getBooks, getBookById, getBookBySchool, getAllBooks, getBookByClass, getBookByPublisher}   
