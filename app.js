@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-mongoose.connect('mongodb://mongo:27017/book-db', {useNewUrlParser: true}).then(() => {
+mongoose.connect('mongodb+srv://eknjizara:eknjizara98@cluster0.xfpxb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true}).then(() => {
     console.log('MongoDB connect success!')
 }).catch(err => {
     console.log(err)
